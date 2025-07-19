@@ -1,92 +1,97 @@
- # AWS Python S3 Bucket Pulumi Template
+# Encounter Generator API
 
- A minimal Pulumi template for provisioning a single AWS S3 bucket using Python.
+A lightweight, AWS-hosted backend service for generating Dungeons & Dragons 5e encounters based on player level. Supports streaming integration, custom homebrew monsters, and historical encounter tracking.
 
- ## Overview
+---
 
- This template provisions an S3 bucket (`pulumi_aws.s3.BucketV2`) in your AWS account and exports its ID as an output. It’s an ideal starting point when:
-  - You want to learn Pulumi with AWS in Python.
-  - You need a barebones S3 bucket deployment to build upon.
-  - You prefer a minimal template without extra dependencies.
+## Features
 
- ## Prerequisites
+- Dynamic encounter generation by level
+- Integration with Open5e monster data
+- Custom homebrew monster support
+- Smart groupings for lower CR monsters
+- Encounter history tracking
+- Twitch streaming integration (via chatbot)
+- Serverless backend powered by AWS Lambda, API Gateway, and DynamoDB
+- Managed with Pulumi (Infrastructure-as-Code)
 
- - An AWS account with permissions to create S3 buckets.
- - AWS credentials configured in your environment (for example via AWS CLI or environment variables).
- - Python 3.6 or later installed.
- - Pulumi CLI already installed and logged in.
+---
 
- ## Getting Started
+## Deployment Instructions
 
- 1. Generate a new project from this template:
-    ```bash
-    pulumi new aws-python
-    ```
- 2. Follow the prompts to set your project name and AWS region (default: `us-east-1`).
- 3. Change into your project directory:
-    ```bash
-    cd <project-name>
-    ```
- 4. Preview the planned changes:
-    ```bash
-    pulumi preview
-    ```
- 5. Deploy the stack:
-    ```bash
-    pulumi up
-    ```
- 6. Tear down when finished:
-    ```bash
-    pulumi destroy
-    ```
+### 1. Install Dependencies
 
- ## Project Layout
+Make sure you have these installed:
+- Python 3.12+
+- [Pulumi CLI](https://www.pulumi.com/docs/get-started/install/)
+- AWS CLI with valid credentials
 
- After running `pulumi new`, your directory will look like:
- ```
- ├── __main__.py         # Entry point of the Pulumi program
- ├── Pulumi.yaml         # Project metadata and template configuration
- ├── requirements.txt    # Python dependencies
- └── Pulumi.<stack>.yaml # Stack-specific configuration (e.g., Pulumi.dev.yaml)
- ```
+### 2. Set up Python environment
 
- ## Configuration
+```bash
+cd lambda
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
 
- This template defines the following config value:
+### 3. Configure Pulumi stack
 
- - `aws:region` (string)
-   The AWS region to deploy resources into.
-   Default: `us-east-1`
+```bash
+pulumi login
+pulumi stack init dev
+pulumi config set aws:region us-east-1
+```
 
- View or update configuration with:
- ```bash
- pulumi config get aws:region
- pulumi config set aws:region us-west-2
- ```
+### 4. Deploy the stack
 
- ## Outputs
+```bash
+pulumi up
+```
 
- Once deployed, the stack exports:
+---
 
- - `bucket_name` — the ID of the created S3 bucket.
+## Usage (Local Test)
 
- Retrieve outputs with:
- ```bash
- pulumi stack output bucket_name
- ```
+To test the handler locally:
 
- ## Next Steps
+```bash
+python lambda/handler.py
+```
 
- - Customize `__main__.py` to add or configure additional resources.
- - Explore the Pulumi AWS SDK: https://www.pulumi.com/registry/packages/aws/
- - Break your infrastructure into modules for better organization.
- - Integrate into CI/CD pipelines for automated deployments.
+Once deployed, try hitting the endpoint:
 
- ## Help and Community
+```bash
+curl "https://<your-api-url>/encounter?level=3"
+```
 
- If you have questions or need assistance:
- - Pulumi Documentation: https://www.pulumi.com/docs/
- - Community Slack: https://slack.pulumi.com/
- - GitHub Issues: https://github.com/pulumi/pulumi/issues
+---
 
- Contributions and feedback are always welcome!
+## Example Output
+
+```json
+{
+  "name": "Goblin Ambush",
+  "monsters": [
+    {"name": "Goblin", "cr": 0.25},
+    {"name": "Goblin", "cr": 0.25},
+    {"name": "Goblin Boss", "cr": 1}
+  ],
+  "environment": "forest"
+}
+```
+
+---
+
+## Future Plans
+
+- Add biome-based encounter filters (forest, swamp, dungeon)
+- Include treasure/reward generation
+- Roll20 / Foundry export integration
+- Encounter balancing tools for solo/party mode
+
+---
+
+## License
+
+MIT License. See `LICENSE` for details.
