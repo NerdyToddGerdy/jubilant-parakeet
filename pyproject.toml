@@ -1,0 +1,26 @@
+[project]
+name = "encounter-generator"
+version = "0.2.0"
+description = ""
+authors = [
+    {name = "Todd Gerdy",email = "toadimous@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pulumi (>=3.181.0,<4.0.0)",
+    "pulumi-aws (>=6.83.0,<7.0.0)",
+    "boto3 (>=1.39.3,<2.0.0)",
+    "requests (>=2.32.4,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+mypy = "^1.16.1"
+pytest = "^8.4.1"
+

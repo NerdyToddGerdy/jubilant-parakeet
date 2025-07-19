@@ -1,0 +1,11 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 128
+      Handler: random_encounter.handler
+      CodeUri: /Users/toddgerdy/PycharmProjects/encounter-generator/lambda
+      Runtime: python3.12
+      Architectures:
+        - x86_64
